@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NexusChat | Real-Time Connect</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <div id="username-gate" class="gate">
+    <div class="gate-modal">
+      <div class="gate-brand">
+        <i class="ph-fill ph-shield-check"></i>
+        <h1>NEXUS<span style="color: var(--primary-light);">CHAT</span></h1>
+      </div>
+      <h2>Welcome to the Nexus</h2>
+      <p>Secure, fast, and real-time messaging.</p>
+      <div class="gate-input-wrapper">
+        <i class="ph ph-user-circle"></i>
+        <input id="user" placeholder="Choose a nickname..." autocomplete="off" />
+      </div>
+      <button id="set-username-btn">Connect to Nexus</button>
+    </div>
+  </div>
+
+  <div id="main-app" class="app-container">
+    <!-- Mobile Top Bar -->
+    <div id="mobile-top-bar" class="mobile-top-bar">
+      <div class="brand-area">
+        <i class="ph-fill ph-shield-check"></i>
+        <span>NEXUS<span style="color: var(--primary-light);">CHAT</span></span>
+      </div>
+      <button id="mobile-menu-btn" class="mobile-menu-btn">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="brand-area">
+        <i class="ph-fill ph-shield-check"></i>
+        <span>NEXUS<span style="color: var(--primary-light);">CHAT</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar"><i class="ph ph-user"></i></div>
+        <div class="user-info">
+          <h3 id="display-username">Guest</h3>
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <small>Online</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="section-header">
+          <span class="section-label">CHANNEL BROWSER</span>
+          <i class="ph ph-broadcast"></i>
+        </div>
+        <div id="room-list" class="room-list">
+          <!-- Room items will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="global-stats">
+          <i class="ph ph-users-three"></i>
+          <span id="global-count">0</span> Users Online
+        </div>
+      </div>
+    </aside>
+
+    <main class="chat-area">
+      <header id="chat-header">
+        <div class="header-info">
+          <div class="header-title-row">
+            <i class="ph-bold ph-chats-teardrop"></i>
+            <h1 id="main-app-title">NexusChat Lobby</h1>
+          </div>
+          <div class="room-info">
+            <p id="room-header" class="room-badge global">Global Lobby</p>
+            <div id="room-stats-header"></div>
+          </div>
+        </div>
+        <button id="leave-room-btn" class="danger-btn hidden">
+          <i class="ph ph-arrow-left"></i> Exit to Lobby
+        </button>
+      </header>
+
+      <div class="chat-viewport">
+        <div class="chat-box" id="chat-box">
+          <!-- Messages will be populated here -->
+        </div>
+        
+        <div id="room-preview-container" class="preview-overlay hidden">
+          <!-- Room preview will be shown here -->
+        </div>
+        
+        <!-- Typing Indicator -->
+        <div id="typing-indicator" class="typing-indicator hidden">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <span class="typing-text">someone is typing...</span>
+        </div>
+      </div>
+
+      <footer id="chat-controls" class="controls-container">
+        <div class="room-actions">
+          <div class="input-with-icon">
+            <i class="ph ph-hash"></i>
+            <input id="room-id" placeholder="Enter Room ID manually..." />
+          </div>
+          <button id="room-btn">Join</button>
+        </div>
+        <div class="message-input-area">
+          <div class="input-with-icon">
+            <i class="ph ph-chat-circle-text"></i>
+            <input id="text" placeholder="Type a message..." />
+          </div>
+          <button id="send-btn">
+            <i class="ph ph-paper-plane-right"></i>
+          </button>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div id="mobile-sidebar-overlay" class="mobile-sidebar-overlay">
+    <aside id="mobile-sidebar-content" >
+      <div class="mobile-sidebar-header">
+        <div class="mobile-brand">
+          <i class="ph-fill ph-shield-check"></i>
+          <span>NEXUS<span style="color: var(--primary-light);">CHAT</span></span>
+        </div>
+        <button class="mobile-sidebar-close" id="mobile-sidebar-close">
+          <i class="ph ph-x"></i>
+        </button>
+      </div>
+
+      <div class="mobile-user-card">
+        <div class="mobile-avatar"><i class="ph ph-user"></i></div>
+        <div class="mobile-user-info">
+          <h3 id="mobile-display-username">Guest</h3>
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <small>Online</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="mobile-room-list">
+        <div class="section-header">
+          <span class="section-label">CHANNEL BROWSER</span>
+          <i class="ph ph-broadcast"></i>
+        </div>
+        <div id="mobile-room-list" class="room-list">
+          <!-- Room items will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <div class="mobile-sidebar-footer">
+        <div class="global-stats">
+          <i class="ph ph-users-three"></i>
+          <span id="mobile-global-count">0</span> Users Online
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
