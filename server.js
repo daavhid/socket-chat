@@ -23,10 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Data
 const availableRooms = [
   'nestjs',
+  'nextjs',
   'backend development',
   'frontend development',
   'database design',
-  'chess online nigeria'
+  'chess talks',
+
 ];
 const connectedUser = {};
 
@@ -84,12 +86,23 @@ io.on('connection', (socket) => {
 
   // Leave room
   socket.on('leave room', (roomId, username) => {
-    io.to(roomId).emit('leave room', { username, roomId });
+    socket.broadcast.to(roomId).emit('leave room', { username, roomId });
     socket.leave(roomId);
     
     io.emit('rooms', availableRoomsData());
-    socket.except(availableRooms).emit('room log', { roomId, username, status: 'left' });
+    io.emit('total online', Object.values(connectedUser).length);
+    io.except(availableRooms).emit('room log', { roomId, username, status: 'left' });
   });
+
+  //typing message
+  socket.on('typing',(username,roomId,textElVal)=>{
+    if(!roomId){
+      socket.broadcast.except(availableRooms).emit('typing', username,textElVal);
+    }
+    else{
+      socket.broadcast.to(roomId).emit('typing',username,textElVal)
+    }
+  })
 
   // Send message
   socket.on('send message', (chatMessage) => {

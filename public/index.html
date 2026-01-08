@@ -8,7 +8,9 @@
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
-
+  <!-- ==================== -->
+  <!-- USERNAME GATE SCREEN -->
+  <!-- ==================== -->
   <div id="username-gate" class="gate">
     <div class="gate-modal">
       <div class="gate-brand">
@@ -25,8 +27,12 @@
     </div>
   </div>
 
+  <!-- ==================== -->
+  <!-- MAIN APPLICATION -->
+  <!-- ==================== -->
   <div id="main-app" class="app-container">
-    <!-- Mobile Top Bar -->
+    
+    <!-- MOBILE TOP BAR -->
     <div id="mobile-top-bar" class="mobile-top-bar">
       <div class="brand-area">
         <i class="ph-fill ph-shield-check"></i>
@@ -37,12 +43,14 @@
       </button>
     </div>
 
+    <!-- DESKTOP SIDEBAR -->
     <aside id="sidebar" class="sidebar">
       <div class="brand-area">
         <i class="ph-fill ph-shield-check"></i>
         <span>SOCKET<span style="color: var(--primary-light);">CHAT</span></span>
       </div>
 
+      <!-- USER PROFILE CARD -->
       <div class="user-card">
         <div class="avatar"><i class="ph ph-user"></i></div>
         <div class="user-info">
@@ -54,6 +62,7 @@
         </div>
       </div>
 
+      <!-- ROOM LIST SECTION -->
       <div class="sidebar-content">
         <div class="section-header">
           <span class="section-label">CHANNEL BROWSER</span>
@@ -64,6 +73,7 @@
         </div>
       </div>
 
+      <!-- SIDEBAR FOOTER -->
       <div class="sidebar-footer">
         <div class="global-stats">
           <i class="ph ph-users-three"></i>
@@ -72,7 +82,9 @@
       </div>
     </aside>
 
+    <!-- MAIN CHAT AREA -->
     <main class="chat-area">
+      <!-- CHAT HEADER -->
       <header id="chat-header">
         <div class="header-info">
           <div class="header-title-row">
@@ -81,7 +93,9 @@
           </div>
           <div class="room-info">
             <p id="room-header" class="room-badge global">Global Lobby</p>
-            <div id="room-stats-header"></div>
+            <p id="user-typing"></p>
+            <div id="room-stats-header" class="room-stats-header"></div>
+            <div id="global-stats-header" class="global-stats-header"></div>
           </div>
         </div>
         <button id="leave-room-btn" class="danger-btn hidden">
@@ -89,16 +103,18 @@
         </button>
       </header>
 
+      <!-- CHAT MESSAGES VIEWPORT -->
       <div class="chat-viewport">
         <div class="chat-box" id="chat-box">
           <!-- Messages will be populated here -->
         </div>
         
+        <!-- ROOM PREVIEW OVERLAY -->
         <div id="room-preview-container" class="preview-overlay hidden">
           <!-- Room preview will be shown here -->
         </div>
         
-        <!-- Typing Indicator -->
+        <!-- TYPING INDICATOR -->
         <div id="typing-indicator" class="typing-indicator hidden">
           <div class="typing-dot"></div>
           <div class="typing-dot"></div>
@@ -107,7 +123,9 @@
         </div>
       </div>
 
+      <!-- CHAT CONTROLS -->
       <footer id="chat-controls" class="controls-container">
+        <!-- ROOM JOIN CONTROLS -->
         <div class="room-actions">
           <div class="input-with-icon">
             <i class="ph ph-hash"></i>
@@ -115,6 +133,8 @@
           </div>
           <button id="room-btn">Join</button>
         </div>
+        
+        <!-- MESSAGE INPUT CONTROLS -->
         <div class="message-input-area">
           <div class="input-with-icon">
             <i class="ph ph-chat-circle-text"></i>
@@ -128,9 +148,12 @@
     </main>
   </div>
 
-  <!-- Mobile Sidebar Overlay -->
+  <!-- ==================== -->
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <!-- ==================== -->
   <div id="mobile-sidebar-overlay" class="mobile-sidebar-overlay">
-    <aside id="mobile-sidebar-content" >
+    <aside id="mobile-sidebar-content">
+      <!-- MOBILE SIDEBAR HEADER -->
       <div class="mobile-sidebar-header">
         <div class="mobile-brand">
           <i class="ph-fill ph-shield-check"></i>
@@ -141,6 +164,7 @@
         </button>
       </div>
 
+      <!-- MOBILE USER CARD -->
       <div class="mobile-user-card">
         <div class="mobile-avatar"><i class="ph ph-user"></i></div>
         <div class="mobile-user-info">
@@ -152,6 +176,7 @@
         </div>
       </div>
 
+      <!-- MOBILE ROOM LIST -->
       <div class="mobile-room-list">
         <div class="section-header">
           <span class="section-label">CHANNEL BROWSER</span>
@@ -162,6 +187,7 @@
         </div>
       </div>
 
+      <!-- MOBILE SIDEBAR FOOTER -->
       <div class="mobile-sidebar-footer">
         <div class="global-stats">
           <i class="ph ph-users-three"></i>
@@ -171,6 +197,9 @@
     </aside>
   </div>
 
+  <!-- ==================== -->
+  <!-- SCRIPTS -->
+  <!-- ==================== -->
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
 </body>
