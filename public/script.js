@@ -36,6 +36,7 @@ let joinedRoom = null;
 let joinedRooms = []
 let currentRoomCount = 0;
 let roomMessages = {}; // Store messages per room
+let roomsData = []; // Store rooms data with descriptions
 
 /* ============================================
    UTILITY FUNCTIONS
@@ -150,13 +151,30 @@ function attachLoadMessageToChat({ username, msg, type = "chat" }) {
 // Load stored messages for a room
 function loadRoomMessages(roomName) {
     console.log(roomName, roomMessages, 'this is the data in loadMessages');
-    
+    const roomData = roomsData.find(room => room.name === roomName);
+    const roomDescription = roomData?.description || 'Welcome to this room';
     if (!roomMessages[roomName] || roomMessages[roomName].length === 0) {
-        chatBox.innerHTML = '';
+        chatBox.innerHTML = ``;
         return;
     }
-    
-    chatBox.innerHTML = '';
+    if(roomName !== 'global'){
+
+        chatBox.innerHTML = `
+            <div style="
+                background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.05));
+                border: 1px solid rgba(59, 130, 246, 0.3);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 20px;
+                text-align: center;
+            ">
+                <h3 style="color: var(--primary-light); margin-bottom: 8px; font-size: 1.125rem;">About #${roomName}</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.5; margin: 0;">${roomDescription}</p>
+            </div>
+        `;
+    }else{
+        chatBox.innerHTML = ``
+    }
     roomMessages[roomName].forEach(msgData => {
         attachLoadMessageToChat(msgData);
     });
@@ -553,8 +571,26 @@ socket.on('join room', ({ hasRoom, roomId, roomCount = 0 }) => {
     joinedRooms.push(joinedRoom);
     userTypingEl.innerText = '';
     
-    chatBox.innerHTML = ""; // Clear preview/previous chat
-    setRoomHeader(`Channel: ${joinedRoom}`, 'active');
+    // Get room description
+    const roomData = roomsData.find(room => room.name === roomId);
+    const roomDescription = roomData?.description || 'Welcome to this room';
+    
+    // Create room description banner
+    chatBox.innerHTML = `
+        <div style="
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.05));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        ">
+            <h3 style="color: var(--primary-light); margin-bottom: 8px; font-size: 1.125rem;">About #${roomId}</h3>
+            <p style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.5; margin: 0;">${roomDescription}</p>
+        </div>
+    `;
+    
+    setRoomHeader(`Channel: ${roomId}`, 'active');
     leaveRoomBtn.classList.remove("hidden");
     
     // Update room stats
@@ -562,6 +598,7 @@ socket.on('join room', ({ hasRoom, roomId, roomCount = 0 }) => {
 });
 
 socket.on('rooms', (rooms) => {
+    roomsData = rooms; // Store rooms data with descriptions
     updateSidebarRooms(rooms);
     
     // Update current room count if we're in a room
